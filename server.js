@@ -143,7 +143,9 @@ app.get('/', (req, res) => {
 });
 
 // サーバー起動
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
     console.log(`🔐 DeepL API Key: ${process.env.DEEPL_API_KEY ? 'Configured' : 'Not configured'}`);
+    console.log(`🌐 CORS Origins: ${process.env.ALLOWED_ORIGINS || 'default'}`);
 });

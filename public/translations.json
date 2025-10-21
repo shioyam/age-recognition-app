@@ -1,0 +1,294 @@
+{
+  "ja": {
+    "app": {
+      "title": "年齢推定 AI",
+      "tagline": "画像から顔を検出し、AIで年齢を瞬時に推定"
+    },
+    "upload": {
+      "title": "画像をアップロード",
+      "formats": "JPG、PNG、WebP形式に対応"
+    },
+    "loading": {
+      "analyzing": "AI分析中..."
+    },
+    "results": {
+      "title": "分析結果",
+      "person": "人物",
+      "age": "推定年齢",
+      "years": "歳",
+      "gender": "性別",
+      "male": "男性",
+      "female": "女性",
+      "confidence": "信頼度",
+      "expression": "表情",
+      "changeGender": "性別変更",
+      "expressions": {
+        "neutral": "無表情",
+        "happy": "笑顔",
+        "sad": "悲しい",
+        "angry": "怒り",
+        "fearful": "恐れ",
+        "disgusted": "嫌悪",
+        "surprised": "驚き"
+      }
+    },
+    "features": {
+      "title": "主な特徴",
+      "detection": {
+        "title": "高精度検出",
+        "description": "最新のAI技術で複数の顔を同時検出"
+      },
+      "privacy": {
+        "title": "完全プライベート", 
+        "description": "ブラウザ内で処理、データは外部送信されません"
+      },
+      "speed": {
+        "title": "高速処理",
+        "description": "リアルタイムで年齢・性別・表情を分析"
+      }
+    },
+    "guide": {
+      "title": "使い方",
+      "step1": {
+        "title": "画像をアップロード",
+        "description": "顔が写っている画像を選択してください"
+      },
+      "step2": {
+        "title": "AI分析開始", 
+        "description": "自動的に顔を検出して分析が始まります"
+      },
+      "step3": {
+        "title": "結果確認",
+        "description": "推定年齢、性別、表情の結果を確認"
+      }
+    },
+    "footer": {
+      "privacy": "このアプリはブラウザ上で動作し、画像は外部に送信されません",
+      "powered": "Powered by TensorFlow.js & face-api.js"
+    },
+    "errors": {
+      "noFace": "顔が検出されませんでした。明るく、顔がはっきり写っている画像をお試しください。",
+      "modelLoad": "AIモデルの読み込みに失敗しました。ページを再読み込みしてください。",
+      "fileError": "ファイルの読み込みエラーが発生しました。"
+    }
+  },
+  "en": {
+    "app": {
+      "title": "Age Estimation AI",
+      "tagline": "Detect faces in images and instantly estimate age with AI"
+    },
+    "upload": {
+      "title": "Upload Image",
+      "formats": "Supports JPG, PNG, WebP formats"
+    },
+    "loading": {
+      "analyzing": "AI analyzing..."
+    },
+    "results": {
+      "title": "Analysis Results",
+      "person": "Person",
+      "age": "Estimated Age",
+      "years": "years",
+      "gender": "Gender",
+      "male": "Male",
+      "female": "Female",
+      "confidence": "Confidence",
+      "expression": "Expression",
+      "changeGender": "Change Gender",
+      "expressions": {
+        "neutral": "Neutral",
+        "happy": "Happy",
+        "sad": "Sad",
+        "angry": "Angry",
+        "fearful": "Fearful",
+        "disgusted": "Disgusted",
+        "surprised": "Surprised"
+      }
+    },
+    "features": {
+      "title": "Key Features",
+      "detection": {
+        "title": "High Precision Detection",
+        "description": "Detect multiple faces simultaneously with latest AI technology"
+      },
+      "privacy": {
+        "title": "Completely Private",
+        "description": "Processed in browser, data is never sent externally"
+      },
+      "speed": {
+        "title": "Fast Processing",
+        "description": "Real-time analysis of age, gender, and expressions"
+      }
+    },
+    "guide": {
+      "title": "How to Use",
+      "step1": {
+        "title": "Upload Image",
+        "description": "Select an image with faces"
+      },
+      "step2": {
+        "title": "Start AI Analysis",
+        "description": "Face detection and analysis begins automatically"
+      },
+      "step3": {
+        "title": "View Results",
+        "description": "Check estimated age, gender, and expression results"
+      }
+    },
+    "footer": {
+      "privacy": "This app runs in your browser and images are never sent externally",
+      "powered": "Powered by TensorFlow.js & face-api.js"
+    },
+    "errors": {
+      "noFace": "No face detected. Please try a bright image with clearly visible faces.",
+      "modelLoad": "Failed to load AI model. Please reload the page.",
+      "fileError": "File loading error occurred."
+    }
+  },
+  "ko": {
+    "app": {
+      "title": "나이 추정 AI",
+      "tagline": "이미지에서 얼굴을 감지하고 AI로 나이를 즉시 추정"
+    },
+    "upload": {
+      "title": "이미지 업로드",
+      "formats": "JPG, PNG, WebP 형식 지원"
+    },
+    "loading": {
+      "analyzing": "AI 분석 중..."
+    },
+    "results": {
+      "title": "분석 결과",
+      "person": "인물",
+      "age": "추정 나이",
+      "years": "세",
+      "gender": "성별",
+      "male": "남성",
+      "female": "여성",
+      "confidence": "신뢰도",
+      "expression": "표정",
+      "changeGender": "성별 변경",
+      "expressions": {
+        "neutral": "무표정",
+        "happy": "행복",
+        "sad": "슬픔",
+        "angry": "분노",
+        "fearful": "두려움",
+        "disgusted": "혐오",
+        "surprised": "놀람"
+      }
+    },
+    "features": {
+      "title": "주요 기능",
+      "detection": {
+        "title": "고정밀 감지",
+        "description": "최신 AI 기술로 여러 얼굴을 동시에 감지"
+      },
+      "privacy": {
+        "title": "완전한 프라이버시",
+        "description": "브라우저에서 처리되며 데이터는 외부로 전송되지 않음"
+      },
+      "speed": {
+        "title": "고속 처리",
+        "description": "나이, 성별, 표정을 실시간으로 분석"
+      }
+    },
+    "guide": {
+      "title": "사용 방법",
+      "step1": {
+        "title": "이미지 업로드",
+        "description": "얼굴이 포함된 이미지를 선택하세요"
+      },
+      "step2": {
+        "title": "AI 분석 시작",
+        "description": "얼굴 감지 및 분석이 자동으로 시작됩니다"
+      },
+      "step3": {
+        "title": "결과 확인",
+        "description": "추정된 나이, 성별, 표정 결과를 확인하세요"
+      }
+    },
+    "footer": {
+      "privacy": "이 앱은 브라우저에서 실행되며 이미지는 외부로 전송되지 않습니다",
+      "powered": "TensorFlow.js 및 face-api.js 기반"
+    },
+    "errors": {
+      "noFace": "얼굴이 감지되지 않았습니다. 밝고 얼굴이 선명하게 보이는 이미지를 시도해 보세요.",
+      "modelLoad": "AI 모델 로드에 실패했습니다. 페이지를 새로고침하세요.",
+      "fileError": "파일 로딩 오류가 발생했습니다."
+    }
+  },
+  "de": {
+    "app": {
+      "title": "Altersschätzung KI",
+      "tagline": "Gesichter in Bildern erkennen und Alter sofort mit KI schätzen"
+    },
+    "upload": {
+      "title": "Bild hochladen",
+      "formats": "Unterstützt JPG, PNG, WebP Formate"
+    },
+    "loading": {
+      "analyzing": "KI analysiert..."
+    },
+    "results": {
+      "title": "Analyseergebnisse",
+      "person": "Person",
+      "age": "Geschätztes Alter",
+      "years": "Jahre",
+      "gender": "Geschlecht",
+      "male": "Männlich",
+      "female": "Weiblich",
+      "confidence": "Vertrauen",
+      "expression": "Ausdruck",
+      "changeGender": "Geschlecht ändern",
+      "expressions": {
+        "neutral": "Neutral",
+        "happy": "Glücklich",
+        "sad": "Traurig",
+        "angry": "Wütend",
+        "fearful": "Ängstlich",
+        "disgusted": "Angeekelt",
+        "surprised": "Überrascht"
+      }
+    },
+    "features": {
+      "title": "Hauptmerkmale",
+      "detection": {
+        "title": "Hochpräzise Erkennung",
+        "description": "Erkennt mehrere Gesichter gleichzeitig mit neuester KI-Technologie"
+      },
+      "privacy": {
+        "title": "Vollständig privat",
+        "description": "Im Browser verarbeitet, Daten werden niemals extern gesendet"
+      },
+      "speed": {
+        "title": "Schnelle Verarbeitung",
+        "description": "Echtzeitanalyse von Alter, Geschlecht und Ausdrücken"
+      }
+    },
+    "guide": {
+      "title": "Anwendung",
+      "step1": {
+        "title": "Bild hochladen",
+        "description": "Wählen Sie ein Bild mit Gesichtern aus"
+      },
+      "step2": {
+        "title": "KI-Analyse starten",
+        "description": "Gesichtserkennung und -analyse beginnt automatisch"
+      },
+      "step3": {
+        "title": "Ergebnisse anzeigen",
+        "description": "Überprüfen Sie geschätztes Alter, Geschlecht und Ausdrucksergebnisse"
+      }
+    },
+    "footer": {
+      "privacy": "Diese App läuft in Ihrem Browser und Bilder werden niemals extern gesendet",
+      "powered": "Unterstützt von TensorFlow.js & face-api.js"
+    },
+    "errors": {
+      "noFace": "Kein Gesicht erkannt. Bitte versuchen Sie ein helles Bild mit klar sichtbaren Gesichtern.",
+      "modelLoad": "Fehler beim Laden des KI-Modells. Bitte laden Sie die Seite neu.",
+      "fileError": "Fehler beim Laden der Datei aufgetreten."
+    }
+  }
+}

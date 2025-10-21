@@ -2,31 +2,6 @@
 let currentLanguage = 'ja';
 let translations = {};
 
-// 開発環境判定
-const isDevelopment = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-
-// セキュアなログ出力
-function secureLog(...args) {
-    if (isDevelopment) {
-        console.log(...args);
-    }
-}
-
-function secureWarn(...args) {
-    if (isDevelopment) {
-        console.warn(...args);
-    }
-}
-
-function secureError(...args) {
-    if (isDevelopment) {
-        console.error(...args);
-    } else {
-        // 本番環境では重要なエラーのみログ（個人情報は除外）
-        console.error('An error occurred. Please try again.');
-    }
-}
-
 // 翻訳データを読み込む
 async function loadTranslations() {
     try {
@@ -36,7 +11,7 @@ async function loadTranslations() {
         }
         
         translations = await response.json();
-        secureLog('Translation data loaded:', Object.keys(translations));
+        console.log('Translation data loaded:', Object.keys(translations));
         
         // URLパラメータから言語を取得
         const urlParams = new URLSearchParams(window.location.search);
@@ -45,21 +20,21 @@ async function loadTranslations() {
         // localStorage またはブラウザ言語から初期言語を設定
         if (langParam && translations[langParam]) {
             currentLanguage = langParam;
-            secureLog('Language set from URL parameter:', currentLanguage);
+            console.log('Language set from URL parameter:', currentLanguage);
         } else {
             const savedLang = localStorage.getItem('preferredLanguage');
             if (savedLang && translations[savedLang]) {
                 currentLanguage = savedLang;
-                secureLog('Language set from localStorage:', currentLanguage);
+                console.log('Language set from localStorage:', currentLanguage);
             } else {
                 // ブラウザの言語設定から判定
                 const browserLang = navigator.language.substring(0, 2);
                 if (translations[browserLang]) {
                     currentLanguage = browserLang;
-                    secureLog('Language set from browser:', currentLanguage);
+                    console.log('Language set from browser:', currentLanguage);
                 } else {
                     currentLanguage = 'ja'; // デフォルト
-                    secureLog('Language set to default:', currentLanguage);
+                    console.log('Language set to default:', currentLanguage);
                 }
             }
         }
@@ -73,10 +48,10 @@ async function loadTranslations() {
         
         // 翻訳を適用
         applyTranslations();
-        secureLog('Translations applied for language:', currentLanguage);
+        console.log('Translations applied for language:', currentLanguage);
         
     } catch (error) {
-        secureError('翻訳データの読み込みエラー:', error);
+        console.error('翻訳データの読み込みエラー:', error);
         // フォールバック: 最小限の日本語翻訳データ
         translations = {
             ja: {
@@ -101,31 +76,27 @@ async function loadTranslations() {
 // 翻訳を適用する関数
 function applyTranslations() {
     const elements = document.querySelectorAll('[data-i18n]');
-    secureLog(`Applying translations for ${elements.length} elements in language: ${currentLanguage}`);
+    console.log(`Applying translations for ${elements.length} elements in language: ${currentLanguage}`);
     
     let appliedCount = 0;
     elements.forEach(element => {
         const key = element.getAttribute('data-i18n');
         const translation = getTranslation(key);
         if (translation && translation !== key) {
-            try {
-                if (element.tagName === 'INPUT' && element.type === 'file') {
-                    // ファイル入力の場合はtitleとaria-labelを更新
-                    element.title = translation;
-                    element.setAttribute('aria-label', translation);
-                } else {
-                    element.textContent = translation;
-                }
-                appliedCount++;
-            } catch (error) {
-                secureWarn(`Failed to apply translation for key: ${key}`, error);
+            if (element.tagName === 'INPUT' && element.type === 'file') {
+                // ファイル入力の場合はtitleとaria-labelを更新
+                element.title = translation;
+                element.setAttribute('aria-label', translation);
+            } else {
+                element.textContent = translation;
             }
+            appliedCount++;
         } else {
-            secureWarn(`Translation not found for key: ${key}`);
+            console.warn(`Translation not found for key: ${key}`);
         }
     });
     
-    secureLog(`Applied ${appliedCount} translations successfully`);
+    console.log(`Applied ${appliedCount} translations successfully`);
 }
 
 // 翻訳文字列を取得する関数
@@ -320,16 +291,16 @@ async function loadModels() {
         await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
         await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
         modelsLoaded = true;
-        secureLog('モデルの読み込みが完了しました');
+        console.log('モデルの読み込みが完了しました');
     } catch (error) {
-        secureError('モデルの読み込みエラー:', error);
+        console.error('モデルの読み込みエラー:', error);
         showError(getTranslation('errors.modelLoad'));
     }
 }
 
 // ページ読み込み時に初期化
 window.addEventListener('load', async () => {
-    secureLog('Page loaded, initializing app...');
+    console.log('Page loaded, initializing app...');
     
     // 翻訳データを読み込み
     await loadTranslations();
@@ -338,18 +309,18 @@ window.addEventListener('load', async () => {
     const languageSelect = document.getElementById('languageSelect');
     if (languageSelect) {
         languageSelect.addEventListener('change', (e) => {
-            secureLog(`Language change requested: ${e.target.value}`);
+            console.log(`Language change requested: ${e.target.value}`);
             changeLanguage(e.target.value);
         });
-        secureLog('Language selector event listener added');
+        console.log('Language selector event listener added');
     } else {
-        secureError('Language selector element not found!');
+        console.error('Language selector element not found!');
     }
     
     // モデルを読み込み
     loadModels();
     
-    secureLog('App initialization completed');
+    console.log('App initialization completed');
 });
 
 // 画像入力のイベントリスナー
@@ -358,20 +329,6 @@ document.getElementById('imageInput').addEventListener('change', handleImageUplo
 async function handleImageUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
-    
-    // ファイルタイプとサイズの検証
-    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-    const maxSize = 10 * 1024 * 1024; // 10MB
-    
-    if (!allowedTypes.includes(file.type)) {
-        showError('サポートされていないファイル形式です。JPG、PNG、WebP形式のみサポートしています。');
-        return;
-    }
-    
-    if (file.size > maxSize) {
-        showError('ファイルサイズが大きすぎます。10MB以下のファイルを選択してください。');
-        return;
-    }
 
     // 画像のプレビュー表示
     const reader = new FileReader();

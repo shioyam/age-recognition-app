@@ -1,0 +1,64 @@
+name: Deploy to Production Servers
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'README*.md'
+      - 'docs/**'
+      - '.github/workflows/deploy.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Syntax check
+      run: node -c server.js
+    
+    - name: Environment validation
+      run: |
+        echo "Checking required files..."
+        [ -f "server.js" ] && echo "✓ server.js exists"
+        [ -f "package.json" ] && echo "✓ package.json exists"
+        [ -f ".env.example" ] && echo "✓ .env.example exists"
+        [ -f "translations.json" ] && echo "✓ translations.json exists"
+
+  deploy-info:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Deployment Instructions
+      run: |
+        echo "🚀 Ready for production deployment!"
+        echo ""
+        echo "Choose one of the following deployment methods:"
+        echo ""
+        echo "1. Heroku:"
+        echo "   heroku create your-app-name"
+        echo "   heroku config:set DEEPL_API_KEY=your-key"
+        echo "   git push heroku main"
+        echo ""
+        echo "2. Railway:"
+        echo "   railway new"
+        echo "   railway variables set DEEPL_API_KEY=your-key"
+        echo "   railway up"
+        echo ""
+        echo "3. Vercel:"
+        echo "   vercel --prod"
+        echo "   vercel env add DEEPL_API_KEY"
+        echo ""
+        echo "📚 See DEPLOYMENT.md for detailed instructions"
