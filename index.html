@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>年齢推定アプリ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>年齢推定 AI</h1>
+        <p class="description">画像から顔を検出し、AIで年齢を推定します</p>
+
+        <div class="upload-section">
+            <input type="file" id="imageInput" accept="image/*" class="file-input">
+            <label for="imageInput" class="upload-button">
+                <i class="fas fa-cloud-upload-alt"></i>
+                画像をアップロード
+            </label>
+        </div>
+
+        <div id="imagePreview" class="image-preview hidden">
+            <div class="image-container">
+                <img id="previewImg" alt="プレビュー">
+                <canvas id="overlayCanvas"></canvas>
+            </div>
+        </div>
+
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>分析中...</p>
+        </div>
+
+        <div id="results" class="results hidden">
+            <h2>推定結果</h2>
+            <div id="resultContent"></div>
+        </div>
+
+        <div class="info-section">
+            <h3><i class="fas fa-info-circle"></i> 使い方</h3>
+            <ol>
+                <li><i class="fas fa-mouse-pointer"></i> 「画像をアップロード」ボタンをクリック</li>
+                <li><i class="fas fa-image"></i> 顔が写っている画像を選択</li>
+                <li><i class="fas fa-magic"></i> 自動的に顔を検出して年齢を推定</li>
+            </ol>
+            <div class="tip">
+                <h4><i class="fas fa-lightbulb"></i> より良い検出のために</h4>
+                <p>• 顔が画像の20%以上を占めるサイズがおすすめ</p>
+                <p>• 明るく、正面から撮影された画像が最適</p>
+                <p>• 小さな顔でも高精度AIが自動で再検出を試行します</p>
+                <p>• 性別判定は信頼度付きで表示されます（70%以上：高精度、55-70%：中程度、55%未満：判定困難）</p>
+            </div>
+            <p class="note"><i class="fas fa-shield-alt"></i> このアプリはブラウザ上で動作し、画像は外部に送信されません</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

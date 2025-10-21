@@ -1,0 +1,41 @@
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Node.js (if used for development)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python (if used for local server)
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Development tools
+.eslintcache
+.stylelintcache
+
+# Test coverage
+coverage/
+
+# Documentation
+docs/temp/
