@@ -1,6 +1,6 @@
 # 🤖 AI年齢推定アプリ
 
-[![Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://YOUR_USERNAME.github.io/age-recognition-app/)
+[![Demo](https://img.shields.io/badge/Demo-Live-brightgreen)](https://shioyam.github.io/age-recognition-app/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![TensorFlow.js](https://img.shields.io/badge/TensorFlow.js-Face--API-orange.svg)](https://github.com/vladmandic/face-api)
@@ -44,13 +44,13 @@
 ## 🚀 クイックスタート
 
 ### デモを試す
-👉 **[ライブデモはこちら](https://YOUR_USERNAME.github.io/age-recognition-app/)**
+👉 **[ライブデモはこちら](https://shioyam.github.io/age-recognition-app/)**
 
 ### ローカル環境での実行
 
 1. **リポジトリをクローン**
 ```bash
-git clone https://github.com/YOUR_USERNAME/age-recognition-app.git
+git clone https://github.com/shioyam/age-recognition-app.git
 cd age-recognition-app
 ```
 
@@ -183,8 +183,8 @@ live-server --port=8000
 
 ## 📞 サポート・連絡先
 
-- 🐛 **バグ報告**: [Issues](https://github.com/YOUR_USERNAME/age-recognition-app/issues)
-- 💡 **機能要望**: [Discussions](https://github.com/YOUR_USERNAME/age-recognition-app/discussions)
+- 🐛 **バグ報告**: [Issues](https://github.com/shioyam/age-recognition-app/issues)
+- 💡 **機能要望**: [Discussions](https://github.com/shioyam/age-recognition-app/discussions)
 - 📧 **直接連絡**: your-email@example.com
 
 ---
