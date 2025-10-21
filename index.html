@@ -3,117 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>年齢推定アプリ</title>
+    <title>年齢推定 AI - 画像から年齢を瞬時に分析</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="app-header">
-            <div class="logo-section">
-                <img src="logo.svg" alt="年齢推定AI ロゴ" class="app-logo">
-                <div class="header-text">
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-user-clock"></i>
+                    </div>
                     <h1>年齢推定 AI</h1>
-                    <p class="description">画像から顔を検出し、AIで年齢を推定します</p>
                 </div>
-            </div>
-            <div class="hero-illustration">
-                <img src="hero-illustration.svg" alt="顔検出技術の説明図" class="hero-image">
+                <p class="tagline">画像から顔を検出し、AIで年齢を瞬時に推定</p>
             </div>
         </header>
 
-        <div class="upload-section">
-            <input type="file" id="imageInput" accept="image/*" class="file-input">
-            <label for="imageInput" class="upload-button">
-                <i class="fas fa-cloud-upload-alt"></i>
-                画像をアップロード
-            </label>
-        </div>
-
-        <div id="imagePreview" class="image-preview hidden">
-            <div class="image-container">
-                <img id="previewImg" alt="プレビュー">
-                <canvas id="overlayCanvas"></canvas>
-            </div>
-        </div>
-
-        <div id="loading" class="loading hidden">
-            <div class="spinner"></div>
-            <p>分析中...</p>
-        </div>
-
-        <div id="results" class="results hidden">
-            <h2>推定結果</h2>
-            <div id="resultContent"></div>
-        </div>
-
-        <div class="features-section">
-            <h3><i class="fas fa-rocket"></i> アプリの特徴</h3>
-            <div class="features-grid">
-                <img src="feature-icons.svg" alt="アプリの機能一覧" class="features-icons">
-            </div>
-        </div>
-
-        <div class="security-section">
-            <div class="security-content">
-                <div class="security-illustration">
-                    <img src="security-icon.svg" alt="ブラウザセキュリティ" class="security-image">
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Upload Section -->
+            <section class="upload-section">
+                <div class="upload-area">
+                    <input type="file" id="imageInput" accept="image/*" class="file-input">
+                    <label for="imageInput" class="upload-label">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <h3>画像をアップロード</h3>
+                        <p>JPG、PNG、WebP形式に対応</p>
+                    </label>
                 </div>
-                <div class="security-text">
-                    <h3><i class="fas fa-shield-alt"></i> 完全にセキュアなブラウザ処理</h3>
-                    <div class="security-features">
-                        <div class="security-feature">
-                            <i class="fas fa-lock"></i>
-                            <div>
-                                <h4>データは外部送信されません</h4>
-                                <p>すべての画像処理はお使いのブラウザ内で完結します</p>
-                            </div>
+            </section>
+
+            <!-- Image Preview -->
+            <section id="imagePreview" class="image-preview hidden">
+                <div class="image-container">
+                    <img id="previewImg" alt="プレビュー">
+                    <canvas id="overlayCanvas"></canvas>
+                </div>
+            </section>
+
+            <!-- Loading -->
+            <section id="loading" class="loading hidden">
+                <div class="loader">
+                    <div class="spinner"></div>
+                    <p>AI分析中...</p>
+                </div>
+            </section>
+
+            <!-- Results -->
+            <section id="results" class="results hidden">
+                <h2>分析結果</h2>
+                <div id="resultContent"></div>
+            </section>
+
+            <!-- Features -->
+            <section class="features">
+                <h2>主な特徴</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-search"></i>
                         </div>
-                        <div class="security-feature">
-                            <i class="fas fa-user-secret"></i>
-                            <div>
-                                <h4>プライベート処理</h4>
-                                <p>アップロードした画像はサーバーに保存されません</p>
-                            </div>
+                        <h3>高精度検出</h3>
+                        <p>最新のAI技術で複数の顔を同時検出</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
                         </div>
-                        <div class="security-feature">
-                            <i class="fas fa-wifi"></i>
-                            <div>
-                                <h4>オフライン対応</h4>
-                                <p>一度読み込めばインターネット接続なしでも動作します</p>
-                            </div>
+                        <h3>完全プライベート</h3>
+                        <p>ブラウザ内で処理、データは外部送信されません</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
                         </div>
-                        <div class="security-feature">
-                            <i class="fas fa-code"></i>
-                            <div>
-                                <h4>オープンソース</h4>
-                                <p>コードは完全に公開されており、透明性が保たれています</p>
-                            </div>
+                        <h3>高速処理</h3>
+                        <p>リアルタイムで年齢・性別・表情を分析</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Usage Guide -->
+            <section class="guide">
+                <h2>使い方</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>画像をアップロード</h3>
+                            <p>顔が写っている画像を選択してください</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>AI分析開始</h3>
+                            <p>自動的に顔を検出して分析が始まります</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>結果確認</h3>
+                            <p>推定年齢、性別、表情の結果を確認</p>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </section>
+        </main>
 
-        <div class="info-section">
-            <h3><i class="fas fa-info-circle"></i> 使い方</h3>
-            <ol>
-                <li><i class="fas fa-mouse-pointer"></i> 「画像をアップロード」ボタンをクリック</li>
-                <li><i class="fas fa-image"></i> 顔が写っている画像を選択</li>
-                <li><i class="fas fa-magic"></i> 自動的に顔を検出して年齢を推定</li>
-            </ol>
-            <div class="tip">
-                <h4><i class="fas fa-lightbulb"></i> より良い検出のために</h4>
-                <p>• 顔が画像の20%以上を占めるサイズがおすすめ</p>
-                <p>• 明るく、正面から撮影された画像が最適</p>
-                <p>• 小さな顔でも高精度AIが自動で再検出を試行します</p>
-                <p>• 性別判定は信頼度付きで表示されます（70%以上：高精度、55-70%：中程度、55%未満：判定困難）</p>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p><i class="fas fa-info-circle"></i> このアプリはブラウザ上で動作し、画像は外部に送信されません</p>
+                <p class="tech-note">Powered by TensorFlow.js & face-api.js</p>
             </div>
-            <p class="note"><i class="fas fa-shield-alt"></i> このアプリはブラウザ上で動作し、画像は外部に送信されません</p>
-        </div>
+        </footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js"></script>
