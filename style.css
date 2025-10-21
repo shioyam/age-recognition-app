@@ -75,8 +75,210 @@ body::before {
         0 10px 40px var(--shadow-md);
 }
 
-h1 {
+/* Header section */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    gap: 40px;
+}
+
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+}
+
+.app-logo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.3);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-logo:hover {
+    transform: scale(1.05);
+}
+
+.header-text {
+    flex: 1;
+}
+
+.hero-illustration {
+    flex-shrink: 0;
+}
+
+.hero-image {
+    width: 240px;
+    height: 180px;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.hero-image:hover {
+    opacity: 1;
+}
+
+/* Features section */
+.features-section {
+    margin-bottom: 40px;
     text-align: center;
+}
+
+.features-section h3 {
+    color: var(--text-primary);
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.features-section h3 i {
+    color: var(--primary);
+}
+
+.features-grid {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.features-icons {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 16px;
+    transition: transform 0.3s ease;
+}
+
+/* Security section */
+.security-section {
+    margin: 48px 0;
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(79, 70, 229, 0.05) 100%);
+    border-radius: 24px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.security-section::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(135deg, #10b981, #4f46e5, #06b6d4);
+    border-radius: 24px;
+    z-index: -1;
+    opacity: 0.1;
+}
+
+.security-content {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.security-illustration {
+    flex-shrink: 0;
+}
+
+.security-image {
+    width: 300px;
+    height: 225px;
+    opacity: 0.95;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.security-image:hover {
+    transform: scale(1.02);
+    opacity: 1;
+}
+
+.security-text {
+    flex: 1;
+}
+
+.security-section h3 {
+    color: var(--success);
+    font-size: 1.8em;
+    font-weight: 700;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.security-section h3 i {
+    color: var(--success);
+    font-size: 1.2em;
+}
+
+.security-features {
+    display: grid;
+    gap: 20px;
+}
+
+.security-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    border: 1px solid rgba(16, 185, 129, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.security-feature:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.security-feature i {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, var(--success), var(--primary));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.security-feature h4 {
+    color: var(--text-primary);
+    font-size: 1.1em;
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: 0.01em;
+}
+
+.security-feature p {
+    color: var(--text-secondary);
+    font-size: 0.95em;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.features-icons:hover {
+    transform: scale(1.02);
+}
+
+h1 {
+    text-align: left;
     font-size: 3.2em;
     font-weight: 800;
     margin-bottom: 16px;
@@ -464,6 +666,87 @@ h1 {
 
 .gender-change-btn:active {
     transform: translateY(-1px);
+}
+
+/* Responsive styles for header and features */
+@media (max-width: 768px) {
+    .app-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 24px;
+    }
+    
+    .logo-section {
+        justify-content: center;
+        flex-direction: column;
+        gap: 16px;
+    }
+    
+    .app-logo {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .hero-image {
+        width: 200px;
+        height: 150px;
+    }
+    
+    h1 {
+        text-align: center;
+        font-size: 2.5em;
+    }
+    
+    .features-icons {
+        max-width: 100%;
+    }
+    
+    /* Security section responsive */
+    .security-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 24px;
+    }
+    
+    .security-image {
+        width: 250px;
+        height: 187px;
+    }
+    
+    .security-section h3 {
+        justify-content: center;
+        font-size: 1.5em;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .hero-image {
+        width: 160px;
+        height: 120px;
+    }
+    
+    h1 {
+        font-size: 2em;
+    }
+    
+    .security-image {
+        width: 200px;
+        height: 150px;
+    }
+    
+    .security-section {
+        padding: 24px;
+        margin: 32px 0;
+    }
+    
+    .security-feature {
+        padding: 16px;
+    }
 }
 
 .gender-change-btn.changed {

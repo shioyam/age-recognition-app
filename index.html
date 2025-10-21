@@ -12,8 +12,18 @@
 </head>
 <body>
     <div class="container">
-        <h1>年齢推定 AI</h1>
-        <p class="description">画像から顔を検出し、AIで年齢を推定します</p>
+        <header class="app-header">
+            <div class="logo-section">
+                <img src="logo.svg" alt="年齢推定AI ロゴ" class="app-logo">
+                <div class="header-text">
+                    <h1>年齢推定 AI</h1>
+                    <p class="description">画像から顔を検出し、AIで年齢を推定します</p>
+                </div>
+            </div>
+            <div class="hero-illustration">
+                <img src="hero-illustration.svg" alt="顔検出技術の説明図" class="hero-image">
+            </div>
+        </header>
 
         <div class="upload-section">
             <input type="file" id="imageInput" accept="image/*" class="file-input">
@@ -38,6 +48,54 @@
         <div id="results" class="results hidden">
             <h2>推定結果</h2>
             <div id="resultContent"></div>
+        </div>
+
+        <div class="features-section">
+            <h3><i class="fas fa-rocket"></i> アプリの特徴</h3>
+            <div class="features-grid">
+                <img src="feature-icons.svg" alt="アプリの機能一覧" class="features-icons">
+            </div>
+        </div>
+
+        <div class="security-section">
+            <div class="security-content">
+                <div class="security-illustration">
+                    <img src="security-icon.svg" alt="ブラウザセキュリティ" class="security-image">
+                </div>
+                <div class="security-text">
+                    <h3><i class="fas fa-shield-alt"></i> 完全にセキュアなブラウザ処理</h3>
+                    <div class="security-features">
+                        <div class="security-feature">
+                            <i class="fas fa-lock"></i>
+                            <div>
+                                <h4>データは外部送信されません</h4>
+                                <p>すべての画像処理はお使いのブラウザ内で完結します</p>
+                            </div>
+                        </div>
+                        <div class="security-feature">
+                            <i class="fas fa-user-secret"></i>
+                            <div>
+                                <h4>プライベート処理</h4>
+                                <p>アップロードした画像はサーバーに保存されません</p>
+                            </div>
+                        </div>
+                        <div class="security-feature">
+                            <i class="fas fa-wifi"></i>
+                            <div>
+                                <h4>オフライン対応</h4>
+                                <p>一度読み込めばインターネット接続なしでも動作します</p>
+                            </div>
+                        </div>
+                        <div class="security-feature">
+                            <i class="fas fa-code"></i>
+                            <div>
+                                <h4>オープンソース</h4>
+                                <p>コードは完全に公開されており、透明性が保たれています</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="info-section">

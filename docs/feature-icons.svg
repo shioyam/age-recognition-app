@@ -1,0 +1,66 @@
+<svg width="600" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="icon1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="icon2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="icon3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="icon4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#be185d;stop-opacity:1" />
+    </linearGradient>
+    <filter id="iconShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.1"/>
+    </filter>
+  </defs>
+  
+  <!-- Icon 1: Face Detection -->
+  <g transform="translate(75, 100)">
+    <circle cx="0" cy="0" r="40" fill="url(#icon1)" filter="url(#iconShadow)"/>
+    <circle cx="0" cy="0" r="25" fill="none" stroke="white" stroke-width="2"/>
+    <circle cx="-8" cy="-8" r="3" fill="white"/>
+    <circle cx="8" cy="-8" r="3" fill="white"/>
+    <path d="M -10 8 Q 0 15 10 8" stroke="white" stroke-width="2" fill="none"/>
+    <text x="0" y="60" text-anchor="middle" fill="#374151" font-family="Arial, sans-serif" font-size="12" font-weight="bold">顔検出</text>
+  </g>
+  
+  <!-- Icon 2: AI Analysis -->
+  <g transform="translate(225, 100)">
+    <circle cx="0" cy="0" r="40" fill="url(#icon2)" filter="url(#iconShadow)"/>
+    <circle cx="-15" cy="-10" r="4" fill="white"/>
+    <circle cx="0" cy="-15" r="4" fill="white"/>
+    <circle cx="15" cy="-10" r="4" fill="white"/>
+    <circle cx="-8" cy="8" r="3" fill="white"/>
+    <circle cx="8" cy="8" r="3" fill="white"/>
+    <path d="M -15 -10 L 0 -15 L 15 -10" stroke="white" stroke-width="2"/>
+    <path d="M -15 -10 L -8 8" stroke="white" stroke-width="2"/>
+    <path d="M 15 -10 L 8 8" stroke="white" stroke-width="2"/>
+    <text x="0" y="60" text-anchor="middle" fill="#374151" font-family="Arial, sans-serif" font-size="12" font-weight="bold">AI分析</text>
+  </g>
+  
+  <!-- Icon 3: Age Estimation -->
+  <g transform="translate(375, 100)">
+    <circle cx="0" cy="0" r="40" fill="url(#icon3)" filter="url(#iconShadow)"/>
+    <text x="0" y="8" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="20" font-weight="bold">25</text>
+    <text x="0" y="-15" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="8">歳</text>
+    <circle cx="0" cy="0" r="30" fill="none" stroke="white" stroke-width="2" opacity="0.5"/>
+    <text x="0" y="60" text-anchor="middle" fill="#374151" font-family="Arial, sans-serif" font-size="12" font-weight="bold">年齢推定</text>
+  </g>
+  
+  <!-- Icon 4: Privacy -->
+  <g transform="translate(525, 100)">
+    <circle cx="0" cy="0" r="40" fill="url(#icon4)" filter="url(#iconShadow)"/>
+    <rect x="-12" y="-5" width="24" height="15" rx="3" fill="none" stroke="white" stroke-width="2"/>
+    <rect x="-8" y="-12" width="16" height="8" rx="8" fill="none" stroke="white" stroke-width="2"/>
+    <circle cx="0" cy="2" r="2" fill="white"/>
+    <rect x="-1" y="4" width="2" height="4" fill="white"/>
+    <text x="0" y="60" text-anchor="middle" fill="#374151" font-family="Arial, sans-serif" font-size="12" font-weight="bold">プライバシー</text>
+  </g>
+</svg>
