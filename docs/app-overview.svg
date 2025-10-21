@@ -1,0 +1,90 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0f9ff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#e0f2fe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fef3c7;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#4f46e5" flood-opacity="0.2"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="url(#bgGradient)"/>
+  
+  <!-- Title -->
+  <text x="400" y="50" text-anchor="middle" fill="url(#cardGradient)" font-family="Arial, sans-serif" font-size="28" font-weight="bold">🤖 AI年齢推定アプリ</text>
+  
+  <!-- Upload Section -->
+  <rect x="50" y="80" width="200" height="120" rx="12" fill="white" filter="url(#shadow)" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="150" y="105" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="12" font-weight="bold">📤 画像アップロード</text>
+  <rect x="70" y="120" width="160" height="60" rx="8" fill="#f3f4f6" stroke="#d1d5db" stroke-width="2" stroke-dasharray="5,5"/>
+  <text x="150" y="155" text-anchor="middle" fill="#9ca3af" font-family="Arial, sans-serif" font-size="14">画像をドロップ</text>
+  
+  <!-- Arrow 1 -->
+  <path d="M 260 140 L 310 140" stroke="url(#cardGradient)" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+  
+  <!-- Face Detection -->
+  <rect x="320" y="80" width="200" height="120" rx="12" fill="white" filter="url(#shadow)" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="420" y="105" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="12" font-weight="bold">👁️ 顔検出処理</text>
+  <circle cx="380" cy="140" r="20" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <circle cx="370" cy="135" r="3" fill="#1f2937"/>
+  <circle cx="390" cy="135" r="3" fill="#1f2937"/>
+  <path d="M 375 145 Q 380 150 385 145" stroke="#1f2937" stroke-width="2" fill="none"/>
+  <circle cx="460" cy="140" r="20" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <circle cx="450" cy="135" r="3" fill="#1f2937"/>
+  <circle cx="470" cy="135" r="3" fill="#1f2937"/>
+  <path d="M 455 145 Q 460 150 465 145" stroke="#1f2937" stroke-width="2" fill="none"/>
+  
+  <!-- Arrow 2 -->
+  <path d="M 530 140 L 580 140" stroke="url(#cardGradient)" stroke-width="3" marker-end="url(#arrowhead)" fill="none"/>
+  
+  <!-- AI Analysis -->
+  <rect x="590" y="80" width="160" height="120" rx="12" fill="white" filter="url(#shadow)" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="670" y="105" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="12" font-weight="bold">🧠 AI分析</text>
+  <text x="670" y="125" text-anchor="middle" fill="#4f46e5" font-family="Arial, sans-serif" font-size="10">TensorFlow.js</text>
+  <text x="670" y="140" text-anchor="middle" fill="#4f46e5" font-family="Arial, sans-serif" font-size="10">face-api.js</text>
+  <rect x="610" y="150" width="120" height="8" rx="4" fill="#e5e7eb"/>
+  <rect x="610" y="150" width="90" height="8" rx="4" fill="url(#cardGradient)"/>
+  <text x="670" y="175" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="10">処理中...</text>
+  
+  <!-- Results Section -->
+  <rect x="100" y="250" width="600" height="280" rx="16" fill="white" filter="url(#shadow)" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="400" y="280" text-anchor="middle" fill="url(#cardGradient)" font-family="Arial, sans-serif" font-size="18" font-weight="bold">📊 分析結果</text>
+  
+  <!-- Person 1 Result -->
+  <rect x="140" y="300" width="200" height="180" rx="12" fill="#f0f9ff" stroke="#4f46e5" stroke-width="2"/>
+  <text x="240" y="325" text-anchor="middle" fill="#4f46e5" font-family="Arial, sans-serif" font-size="14" font-weight="bold">👤 人物 1</text>
+  <text x="240" y="355" text-anchor="middle" fill="#4f46e5" font-family="Arial, sans-serif" font-size="32" font-weight="bold">28歳</text>
+  <text x="240" y="380" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="12">♂ 男性 (85%)</text>
+  <text x="240" y="400" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="12">😊 幸せ</text>
+  <rect x="160" y="420" width="160" height="40" rx="8" fill="#10b981" opacity="0.1"/>
+  <text x="240" y="445" text-anchor="middle" fill="#10b981" font-family="Arial, sans-serif" font-size="12" font-weight="bold">✓ 高精度検出</text>
+  
+  <!-- Person 2 Result -->
+  <rect x="460" y="300" width="200" height="180" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="560" y="325" text-anchor="middle" fill="#f59e0b" font-family="Arial, sans-serif" font-size="14" font-weight="bold">👤 人物 2</text>
+  <text x="560" y="355" text-anchor="middle" fill="#f59e0b" font-family="Arial, sans-serif" font-size="32" font-weight="bold">24歳</text>
+  <text x="560" y="380" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="12">♀ 女性 (45%)</text>
+  <text x="560" y="400" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="12">😐 無表情</text>
+  <rect x="480" y="420" width="160" height="40" rx="8" fill="#f59e0b" opacity="0.1"/>
+  <text x="560" y="445" text-anchor="middle" fill="#f59e0b" font-family="Arial, sans-serif" font-size="12" font-weight="bold">⚠ 手動修正可能</text>
+  
+  <!-- Features -->
+  <text x="400" y="560" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="14" font-weight="bold">✨ 主な機能</text>
+  <text x="200" y="580" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="12">🔒 プライバシー重視</text>
+  <text x="400" y="580" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="12">👥 複数人同時検出</text>
+  <text x="600" y="580" text-anchor="middle" fill="#6b7280" font-family="Arial, sans-serif" font-size="12">⚡ リアルタイム処理</text>
+  
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="url(#cardGradient)" />
+    </marker>
+  </defs>
+</svg>

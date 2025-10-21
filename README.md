@@ -7,7 +7,11 @@
 
 > **TensorFlow.jsとface-api.jsを使用した、プライバシー重視のブラウザベース年齢推定アプリ**
 
-![App Screenshot](docs/screenshot.png)
+![App Screenshot](docs/screenshot.svg)
+
+## 🎯 アプリの動作概要
+
+![App Overview](docs/app-overview.svg)
 
 ## ✨ 特徴
 
