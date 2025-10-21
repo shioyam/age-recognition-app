@@ -20,7 +20,7 @@
 
 ### 📧 連絡方法
 
-- **Email**: your-email@example.com
+- **Email**: shioyam@gmail.com
 - **件名**: `[SECURITY] Age Recognition App - Vulnerability Report`
 
 ### 📋 報告に含めるべき情報

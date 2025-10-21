@@ -185,7 +185,7 @@ live-server --port=8000
 
 - 🐛 **バグ報告**: [Issues](https://github.com/shioyam/age-recognition-app/issues)
 - 💡 **機能要望**: [Discussions](https://github.com/shioyam/age-recognition-app/discussions)
-- 📧 **直接連絡**: your-email@example.com
+- 📧 **直接連絡**: shioyam@gmail.com
 
 ---
 
