@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+が、<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
@@ -15,13 +15,23 @@
         <!-- Header -->
         <header class="header">
             <div class="header-content">
-                <div class="logo">
-                    <div class="logo-icon">
-                        <i class="fas fa-user-clock"></i>
+                <div class="header-top">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <i class="fas fa-user-clock"></i>
+                        </div>
+                        <h1 data-i18n="app.title">年齢推定 AI</h1>
                     </div>
-                    <h1>年齢推定 AI</h1>
+                    <div class="language-selector">
+                        <select id="languageSelect" class="language-select">
+                            <option value="ja">🇯🇵 日本語</option>
+                            <option value="en">🇺🇸 English</option>
+                            <option value="ko">🇰🇷 한국어</option>
+                            <option value="de">🇩🇪 Deutsch</option>
+                        </select>
+                    </div>
                 </div>
-                <p class="tagline">画像から顔を検出し、AIで年齢を瞬時に推定</p>
+                <p class="tagline" data-i18n="app.tagline">画像から顔を検出し、AIで年齢を瞬時に推定</p>
             </div>
         </header>
 
@@ -35,8 +45,8 @@
                         <div class="upload-icon">
                             <i class="fas fa-cloud-upload-alt"></i>
                         </div>
-                        <h3>画像をアップロード</h3>
-                        <p>JPG、PNG、WebP形式に対応</p>
+                        <h3 data-i18n="upload.title">画像をアップロード</h3>
+                        <p data-i18n="upload.formats">JPG、PNG、WebP形式に対応</p>
                     </label>
                 </div>
             </section>
@@ -53,67 +63,67 @@
             <section id="loading" class="loading hidden">
                 <div class="loader">
                     <div class="spinner"></div>
-                    <p>AI分析中...</p>
+                    <p data-i18n="loading.analyzing">AI分析中...</p>
                 </div>
             </section>
 
             <!-- Results -->
             <section id="results" class="results hidden">
-                <h2>分析結果</h2>
+                <h2 data-i18n="results.title">分析結果</h2>
                 <div id="resultContent"></div>
             </section>
 
             <!-- Features -->
             <section class="features">
-                <h2>主な特徴</h2>
+                <h2 data-i18n="features.title">主な特徴</h2>
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-search"></i>
                         </div>
-                        <h3>高精度検出</h3>
-                        <p>最新のAI技術で複数の顔を同時検出</p>
+                        <h3 data-i18n="features.detection.title">高精度検出</h3>
+                        <p data-i18n="features.detection.description">最新のAI技術で複数の顔を同時検出</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-shield-alt"></i>
                         </div>
-                        <h3>完全プライベート</h3>
-                        <p>ブラウザ内で処理、データは外部送信されません</p>
+                        <h3 data-i18n="features.privacy.title">完全プライベート</h3>
+                        <p data-i18n="features.privacy.description">ブラウザ内で処理、データは外部送信されません</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">
                             <i class="fas fa-bolt"></i>
                         </div>
-                        <h3>高速処理</h3>
-                        <p>リアルタイムで年齢・性別・表情を分析</p>
+                        <h3 data-i18n="features.speed.title">高速処理</h3>
+                        <p data-i18n="features.speed.description">リアルタイムで年齢・性別・表情を分析</p>
                     </div>
                 </div>
             </section>
 
             <!-- Usage Guide -->
             <section class="guide">
-                <h2>使い方</h2>
+                <h2 data-i18n="guide.title">使い方</h2>
                 <div class="steps">
                     <div class="step">
                         <div class="step-number">1</div>
                         <div class="step-content">
-                            <h3>画像をアップロード</h3>
-                            <p>顔が写っている画像を選択してください</p>
+                            <h3 data-i18n="guide.step1.title">画像をアップロード</h3>
+                            <p data-i18n="guide.step1.description">顔が写っている画像を選択してください</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-number">2</div>
                         <div class="step-content">
-                            <h3>AI分析開始</h3>
-                            <p>自動的に顔を検出して分析が始まります</p>
+                            <h3 data-i18n="guide.step2.title">AI分析開始</h3>
+                            <p data-i18n="guide.step2.description">自動的に顔を検出して分析が始まります</p>
                         </div>
                     </div>
                     <div class="step">
                         <div class="step-number">3</div>
                         <div class="step-content">
-                            <h3>結果確認</h3>
-                            <p>推定年齢、性別、表情の結果を確認</p>
+                            <h3 data-i18n="guide.step3.title">結果確認</h3>
+                            <p data-i18n="guide.step3.description">推定年齢、性別、表情の結果を確認</p>
                         </div>
                     </div>
                 </div>
@@ -123,8 +133,8 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="footer-content">
-                <p><i class="fas fa-info-circle"></i> このアプリはブラウザ上で動作し、画像は外部に送信されません</p>
-                <p class="tech-note">Powered by TensorFlow.js & face-api.js</p>
+                <p><i class="fas fa-info-circle"></i> <span data-i18n="footer.privacy">このアプリはブラウザ上で動作し、画像は外部に送信されません</span></p>
+                <p class="tech-note" data-i18n="footer.powered">Powered by TensorFlow.js & face-api.js</p>
             </div>
         </footer>
     </div>
