@@ -10,25 +10,70 @@ class SalaryPredictor {
 
     async init() {
         try {
+            // ローディング表示
+            this.showInitializationStatus('データを読み込み中...');
+            
             await this.loadSalaryData();
             this.bindEvents();
+            
+            // 成功時にローディングを隠す
+            this.hideInitializationStatus();
             console.log('年収予測アプリが初期化されました');
+            
+            // 成功メッセージを表示
+            setTimeout(() => {
+                this.showToast('アプリケーションの準備が完了しました！', 'success');
+            }, 500);
+            
         } catch (error) {
             console.error('アプリケーションの初期化に失敗しました:', error);
-            this.showError('データの読み込みに失敗しました。ページを再読み込みしてください。');
+            this.hideInitializationStatus();
+            this.showError(error.message || 'データの読み込みに失敗しました。ページを再読み込みしてください。');
+            
+            // リトライボタンを表示
+            this.showRetryOption();
         }
     }
 
     async loadSalaryData() {
         try {
+            console.log('データ読み込み開始:', new Date().toISOString());
+            
             const response = await fetch('salary-data.json');
+            console.log('Fetch Response:', {
+                status: response.status,
+                statusText: response.statusText,
+                ok: response.ok,
+                url: response.url
+            });
+            
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
             }
-            this.salaryData = await response.json();
+            
+            const text = await response.text();
+            console.log('Raw response length:', text.length);
+            
+            this.salaryData = JSON.parse(text);
+            console.log('データ読み込み成功:', Object.keys(this.salaryData));
+            
         } catch (error) {
-            console.error('給与データの読み込みエラー:', error);
-            throw error;
+            console.error('給与データの読み込みエラー詳細:', {
+                name: error.name,
+                message: error.message,
+                stack: error.stack
+            });
+            
+            // より具体的なエラーメッセージを表示
+            if (error.name === 'SyntaxError') {
+                throw new Error('データファイルの形式が正しくありません。管理者に連絡してください。');
+            } else if (error.message.includes('404')) {
+                throw new Error('データファイル（salary-data.json）が見つかりません。ファイルが存在することを確認してください。');
+            } else if (error.message.includes('Failed to fetch')) {
+                throw new Error('ネットワークエラーです。インターネット接続を確認するか、ローカルサーバーを使用してください。');
+            } else {
+                throw new Error(`データ読み込みエラー: ${error.message}`);
+            }
         }
     }
 
@@ -298,6 +343,66 @@ class SalaryPredictor {
         return industryMap[industry] || industry;
     }
 
+    showInitializationStatus(message) {
+        // 初期化ステータスの表示
+        let statusDiv = document.getElementById('initializationStatus');
+        if (!statusDiv) {
+            statusDiv = document.createElement('div');
+            statusDiv.id = 'initializationStatus';
+            statusDiv.className = 'initialization-status';
+            document.body.appendChild(statusDiv);
+        }
+        
+        statusDiv.innerHTML = `
+            <div class="status-content">
+                <div class="status-spinner"></div>
+                <p>${message}</p>
+            </div>
+        `;
+        statusDiv.style.display = 'flex';
+    }
+
+    hideInitializationStatus() {
+        const statusDiv = document.getElementById('initializationStatus');
+        if (statusDiv) {
+            statusDiv.style.display = 'none';
+        }
+    }
+
+    showRetryOption() {
+        let retryDiv = document.getElementById('retryOption');
+        if (!retryDiv) {
+            retryDiv = document.createElement('div');
+            retryDiv.id = 'retryOption';
+            retryDiv.className = 'retry-option';
+            document.body.appendChild(retryDiv);
+        }
+        
+        retryDiv.innerHTML = `
+            <div class="retry-content">
+                <h3>⚠️ 初期化に失敗しました</h3>
+                <p>データの読み込みに問題が発生しました。</p>
+                <div class="retry-actions">
+                    <button onclick="location.reload()" class="retry-btn primary">
+                        <i class="fas fa-redo"></i> ページを再読み込み
+                    </button>
+                    <button onclick="window.salaryPredictor.init()" class="retry-btn secondary">
+                        <i class="fas fa-sync"></i> 再試行
+                    </button>
+                </div>
+                <div class="troubleshooting">
+                    <h4>トラブルシューティング:</h4>
+                    <ul>
+                        <li>ローカルサーバーが起動していることを確認してください</li>
+                        <li>ブラウザの開発者ツール（F12）でエラーの詳細を確認してください</li>
+                        <li>salary-data.json ファイルが存在することを確認してください</li>
+                    </ul>
+                </div>
+            </div>
+        `;
+        retryDiv.style.display = 'flex';
+    }
+
     updateIndustryInfo(predictions) {
         const industryInfoCard = document.getElementById('industryInfoCard');
         const japanMultiplierElement = document.getElementById('japanMultiplier');
@@ -375,29 +480,47 @@ class SalaryPredictor {
             existingToast.remove();
         }
         
+        // アイコンマップ
+        const iconMap = {
+            'error': 'exclamation-circle',
+            'success': 'check-circle',
+            'warning': 'exclamation-triangle',
+            'info': 'info-circle'
+        };
+        
         // トースト要素を作成
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
         toast.innerHTML = `
             <div class="toast-content">
-                <i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <i class="fas fa-${iconMap[type] || 'info-circle'}"></i>
                 <span>${message}</span>
             </div>
         `;
+        
+        // 背景色マップ
+        const colorMap = {
+            'error': '#ef4444',
+            'success': '#10b981',
+            'warning': '#f59e0b',
+            'info': '#3b82f6'
+        };
         
         // スタイルを追加
         toast.style.cssText = `
             position: fixed;
             top: 20px;
             right: 20px;
-            background: ${type === 'error' ? '#ef4444' : '#3b82f6'};
+            background: ${colorMap[type] || '#3b82f6'};
             color: white;
             padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
             z-index: 1000;
             animation: slideInRight 0.3s ease-out;
             max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         `;
         
         // CSSアニメーションを追加
@@ -421,6 +544,120 @@ class SalaryPredictor {
                     align-items: center;
                     gap: 0.5rem;
                 }
+                
+                .initialization-status {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: rgba(15, 23, 42, 0.95);
+                    backdrop-filter: blur(10px);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                    color: white;
+                }
+                
+                .status-content {
+                    text-align: center;
+                    padding: 2rem;
+                }
+                
+                .status-spinner {
+                    width: 48px;
+                    height: 48px;
+                    border: 4px solid rgba(99, 102, 241, 0.2);
+                    border-top: 4px solid #6366f1;
+                    border-radius: 50%;
+                    animation: modernSpin 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+                    margin: 0 auto 1rem;
+                }
+                
+                .retry-option {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    background: rgba(15, 23, 42, 0.95);
+                    backdrop-filter: blur(10px);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 9999;
+                    color: white;
+                }
+                
+                .retry-content {
+                    max-width: 500px;
+                    padding: 2rem;
+                    text-align: center;
+                    background: rgba(255, 255, 255, 0.1);
+                    border-radius: 20px;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                }
+                
+                .retry-actions {
+                    display: flex;
+                    gap: 1rem;
+                    margin: 1.5rem 0;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                }
+                
+                .retry-btn {
+                    padding: 0.8rem 1.5rem;
+                    border: none;
+                    border-radius: 12px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+                
+                .retry-btn.primary {
+                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                    color: white;
+                }
+                
+                .retry-btn.secondary {
+                    background: rgba(255, 255, 255, 0.1);
+                    color: white;
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                }
+                
+                .retry-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+                }
+                
+                .troubleshooting {
+                    margin-top: 1.5rem;
+                    text-align: left;
+                    background: rgba(255, 255, 255, 0.05);
+                    padding: 1rem;
+                    border-radius: 8px;
+                }
+                
+                .troubleshooting h4 {
+                    margin-bottom: 0.5rem;
+                    color: #fbbf24;
+                }
+                
+                .troubleshooting ul {
+                    margin: 0;
+                    padding-left: 1.2rem;
+                }
+                
+                .troubleshooting li {
+                    margin-bottom: 0.3rem;
+                    font-size: 0.9rem;
+                    opacity: 0.9;
+                }
             `;
             document.head.appendChild(style);
         }
@@ -440,7 +677,7 @@ class SalaryPredictor {
 
 // アプリケーションの初期化
 document.addEventListener('DOMContentLoaded', () => {
-    new SalaryPredictor();
+    window.salaryPredictor = new SalaryPredictor();
 });
 
 // パフォーマンス最適化: Intersection Observer を使用して表示領域に入った時のアニメーション
