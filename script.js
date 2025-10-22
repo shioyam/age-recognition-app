@@ -314,6 +314,12 @@ let modelsLoaded = false;
 // モデルの初期化
 async function loadModels() {
     try {
+        // face-api.jsが利用可能かチェック
+        if (typeof faceapi === 'undefined') {
+            throw new Error('face-api.js library not loaded');
+        }
+        
+        secureLog('Loading AI models...');
         await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
         await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL); // 小さな顔検出用
         await faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL);
@@ -322,8 +328,16 @@ async function loadModels() {
         modelsLoaded = true;
         secureLog('モデルの読み込みが完了しました');
     } catch (error) {
+        modelsLoaded = false;
         secureError('モデルの読み込みエラー:', error);
-        showError(getTranslation('errors.modelLoad'));
+        
+        if (error.message && error.message.includes('face-api')) {
+            showError('AIライブラリの読み込みに失敗しました。ページを再読み込みしてください。');
+        } else if (error.message && error.message.includes('network')) {
+            showError('ネットワークエラーです。インターネット接続を確認してページを再読み込みしてください。');
+        } else {
+            showError(getTranslation('errors.modelLoad'));
+        }
     }
 }
 
@@ -353,7 +367,15 @@ window.addEventListener('load', async () => {
 });
 
 // 画像入力のイベントリスナー
-document.getElementById('imageInput').addEventListener('change', handleImageUpload);
+document.addEventListener('DOMContentLoaded', () => {
+    const imageInput = document.getElementById('imageInput');
+    if (imageInput) {
+        imageInput.addEventListener('change', handleImageUpload);
+        secureLog('Image input event listener added');
+    } else {
+        secureError('Image input element not found!');
+    }
+});
 
 async function handleImageUpload(event) {
     const file = event.target.files[0];
@@ -375,18 +397,46 @@ async function handleImageUpload(event) {
 
     // 画像のプレビュー表示
     const reader = new FileReader();
+    
     reader.onload = async (e) => {
-        const img = document.getElementById('previewImg');
-        img.src = e.target.result;
+        try {
+            const img = document.getElementById('previewImg');
+            if (!img) {
+                throw new Error('プレビュー要素が見つかりません');
+            }
+            
+            img.src = e.target.result;
 
-        const preview = document.getElementById('imagePreview');
-        preview.classList.remove('hidden');
+            const preview = document.getElementById('imagePreview');
+            if (!preview) {
+                throw new Error('プレビューコンテナが見つかりません');
+            }
+            preview.classList.remove('hidden');
 
-        // 画像が読み込まれたら年齢推定を実行
-        img.onload = () => {
-            detectAge(img);
-        };
+            // 画像が読み込まれたら年齢推定を実行
+            img.onload = () => {
+                detectAge(img);
+            };
+            
+            // 画像読み込みエラーのハンドリング
+            img.onerror = () => {
+                secureError('画像の読み込みに失敗しました');
+                showError('画像ファイルが破損しているか、サポートされていない形式です。');
+                hideLoading();
+            };
+        } catch (error) {
+            secureError('画像プレビュー処理エラー:', error);
+            showError('画像の処理中にエラーが発生しました。');
+            hideLoading();
+        }
     };
+    
+    reader.onerror = () => {
+        secureError('FileReader エラー:', reader.error);
+        showError('ファイルの読み込み中にエラーが発生しました。ファイルが破損していないか確認してください。');
+        hideLoading();
+    };
+    
     reader.readAsDataURL(file);
 
     // 以前の結果をクリア
@@ -398,6 +448,12 @@ async function detectAge(img) {
     if (!modelsLoaded) {
         showLoading();
         await loadModels();
+        
+        // モデル読み込みに失敗した場合は処理を中止
+        if (!modelsLoaded) {
+            hideLoading();
+            return;
+        }
     }
 
     showLoading();
@@ -441,8 +497,18 @@ async function detectAge(img) {
 
     } catch (error) {
         hideLoading();
-        console.error('検出エラー:', error);
-        showError(getTranslation('errors.fileError'));
+        secureError('検出エラー:', error);
+        
+        // エラーの種類に応じて適切なメッセージを表示
+        if (error.message && error.message.includes('model')) {
+            showError(getTranslation('errors.modelLoad'));
+        } else if (error.message && error.message.includes('network')) {
+            showError('ネットワークエラーが発生しました。インターネット接続を確認してください。');
+        } else if (error.message && error.message.includes('canvas')) {
+            showError('画像の処理中にエラーが発生しました。別の画像をお試しください。');
+        } else {
+            showError(getTranslation('errors.fileError'));
+        }
     }
 }
 
@@ -714,25 +780,48 @@ function updateCanvasDisplay() {
 }
 
 function showLoading() {
-    document.getElementById('loading').classList.remove('hidden');
+    const loading = document.getElementById('loading');
+    if (loading) {
+        loading.classList.remove('hidden');
+    } else {
+        secureError('Loading element not found');
+    }
 }
 
 function hideLoading() {
-    document.getElementById('loading').classList.add('hidden');
+    const loading = document.getElementById('loading');
+    if (loading) {
+        loading.classList.add('hidden');
+    }
 }
 
 function showError(message) {
     const resultsDiv = document.getElementById('results');
     const resultContent = document.getElementById('resultContent');
 
-    resultContent.innerHTML = `<div class="error">${message}</div>`;
-    resultsDiv.classList.remove('hidden');
+    if (resultsDiv && resultContent) {
+        // エラーメッセージをHTMLエスケープして安全に表示
+        const escapedMessage = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        resultContent.innerHTML = `<div class="error">${escapedMessage}</div>`;
+        resultsDiv.classList.remove('hidden');
+    } else {
+        secureError('Error display elements not found');
+        // フォールバック: アラートで表示
+        alert(message);
+    }
 }
 
 function hideError() {
-    // エラーメッセージをクリア
+    const resultContent = document.getElementById('resultContent');
+    if (resultContent) {
+        const errorElements = resultContent.querySelectorAll('.error');
+        errorElements.forEach(el => el.remove());
+    }
 }
 
 function hideResults() {
-    document.getElementById('results').classList.add('hidden');
+    const results = document.getElementById('results');
+    if (results) {
+        results.classList.add('hidden');
+    }
 }
