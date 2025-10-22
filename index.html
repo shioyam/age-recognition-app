@@ -8,11 +8,11 @@
     <!-- Security Headers -->
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self'; 
-        script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; 
+        script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com; 
         style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; 
         font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; 
         img-src 'self' data: blob:; 
-        connect-src 'self' https://cdn.jsdelivr.net;
+        connect-src 'self' https://cdn.jsdelivr.net https://unpkg.com;
         frame-ancestors 'none';
         base-uri 'self';
         form-action 'self';">
@@ -77,9 +77,20 @@
                 </div>
             </section>
 
-            <!-- Loading -->
+            <!-- Initial Loading Status -->
+            <section id="loading-status" class="loading-status">
+                <div class="status-content">
+                    <div class="status-icon">⏳</div>
+                    <p id="status-message">AIライブラリを読み込み中...</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analysis Loading -->
             <section id="loading" class="loading hidden">
-                <div class="loader">
+                <div class="loading-content">
                     <div class="spinner"></div>
                     <p data-i18n="loading.analyzing">AI分析中...</p>
                 </div>
@@ -157,9 +168,192 @@
         </footer>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.min.js" 
-            integrity="sha512-RJlfd1a8Z0kkFfLfki7qGUX1ssOI4bMTlBOOYPjt8vFbRvaTEZG2GvCRGGKe1nA+i1H8V/bYLRdKhL/TqLjcw==" 
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        // 改善されたface-api.js読み込みシステム
+        let faceApiLoadAttempts = 0;
+        let faceApiLoadStartTime = Date.now();
+        
+        const FACE_API_SOURCES = [
+            {
+                url: './libs/face-api.min.js',
+                name: 'Local File (Fastest)',
+                timeout: 3000,
+                isLocal: true
+            },
+            {
+                url: 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/dist/face-api.min.js',
+                name: 'jsDelivr CDN (Primary)',
+                timeout: 10000
+            },
+            {
+                url: 'https://unpkg.com/@vladmandic/face-api@1.7.12/dist/face-api.min.js',
+                name: 'unpkg CDN',
+                timeout: 8000
+            },
+            {
+                url: 'https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js',
+                name: 'face-api.js Original',
+                timeout: 8000
+            }
+        ];
+
+        function loadFaceApi(sourceIndex = 0) {
+            if (sourceIndex >= FACE_API_SOURCES.length) {
+                handleAllFaceApiSourcesFailed();
+                return;
+            }
+
+            const source = FACE_API_SOURCES[sourceIndex];
+            faceApiLoadAttempts++;
+            
+            console.log(`Loading face-api.js from ${source.name} (attempt ${faceApiLoadAttempts})`);
+            
+            const script = document.createElement('script');
+            script.src = source.url;
+            script.crossOrigin = 'anonymous';
+            script.referrerPolicy = 'no-referrer';
+            
+            // タイムアウト処理
+            const timeout = setTimeout(() => {
+                console.warn(`${source.name} timed out after ${source.timeout}ms`);
+                script.remove();
+                loadFaceApi(sourceIndex + 1);
+            }, source.timeout);
+            
+            script.onload = function() {
+                clearTimeout(timeout);
+                const loadTime = Date.now() - faceApiLoadStartTime;
+                console.log(`✅ face-api.js loaded successfully from ${source.name} in ${loadTime}ms`);
+                
+                // face-api.jsが正常に読み込まれたかチェック
+                if (typeof faceapi !== 'undefined') {
+                    showLoadingStatus(`AIライブラリが正常に読み込まれました (${loadTime}ms)`);
+                } else {
+                    console.error('face-api.js loaded but faceapi object is undefined');
+                    loadFaceApi(sourceIndex + 1);
+                }
+            };
+            
+            script.onerror = function() {
+                clearTimeout(timeout);
+                console.error(`❌ Failed to load from ${source.name}`);
+                loadFaceApi(sourceIndex + 1);
+            };
+            
+            document.head.appendChild(script);
+        }
+
+        function handleFaceApiLoadError() {
+            // レガシー関数 - 新しいシステムで処理
+            loadFaceApi(1);
+        }
+        
+        function handleAllFaceApiSourcesFailed() {
+            const totalTime = Date.now() - faceApiLoadStartTime;
+            console.error(`❌ All face-api.js sources failed after ${faceApiLoadAttempts} attempts in ${totalTime}ms`);
+            
+            showLoadingError({
+                title: 'AIライブラリの読み込みに失敗しました',
+                message: 'すべてのCDNソースから読み込みに失敗しました。',
+                attempts: faceApiLoadAttempts,
+                totalTime: totalTime,
+                suggestions: [
+                    'インターネット接続を確認してください',
+                    'ファイアウォールまたは広告ブロッカーを確認してください', 
+                    'VPNを使用している場合は無効にしてください',
+                    'ブラウザのキャッシュをクリアしてください',
+                    '別のブラウザでお試しください'
+                ]
+            });
+        }
+
+        function showLoadingStatus(message, progress = 100) {
+            const statusDiv = document.getElementById('loading-status');
+            const statusMessage = document.getElementById('status-message');
+            const progressFill = document.getElementById('progress-fill');
+            
+            if (statusDiv && statusMessage && progressFill) {
+                statusMessage.textContent = message;
+                progressFill.style.width = `${progress}%`;
+                
+                if (progress === 100) {
+                    statusDiv.style.background = 'rgba(16, 185, 129, 0.1)';
+                    statusMessage.style.color = '#059669';
+                    setTimeout(() => {
+                        statusDiv.style.opacity = '0';
+                        setTimeout(() => statusDiv.style.display = 'none', 300);
+                    }, 2000);
+                }
+            }
+        }
+        
+        function updateLoadingProgress(stage, progress) {
+            const statusMessage = document.getElementById('status-message');
+            const progressFill = document.getElementById('progress-fill');
+            
+            const stages = {
+                'library': { message: 'AIライブラリを読み込み中...', baseProgress: 0 },
+                'models': { message: 'AIモデルを読み込み中...', baseProgress: 30 },
+                'ready': { message: '準備完了', baseProgress: 100 }
+            };
+            
+            if (statusMessage && progressFill && stages[stage]) {
+                const stageInfo = stages[stage];
+                const totalProgress = stageInfo.baseProgress + (progress * (stage === 'library' ? 30 : stage === 'models' ? 70 : 0) / 100);
+                
+                statusMessage.textContent = stageInfo.message;
+                progressFill.style.width = `${Math.min(totalProgress, 100)}%`;
+            }
+        }
+
+        function showLoadingError(errorInfo) {
+            // より詳細なエラー情報を表示
+            const resultsDiv = document.getElementById('results');
+            if (resultsDiv) {
+                resultsDiv.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; background: linear-gradient(135deg, #fee 0%, #fdd 100%); border-radius: 12px; border: 2px solid #f87171; box-shadow: 0 4px 12px rgba(248, 113, 113, 0.15);">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+                        <h3 style="color: #dc2626; margin-bottom: 1rem;">${errorInfo.title}</h3>
+                        <p style="color: #7f1d1d; margin-bottom: 1rem;">${errorInfo.message}</p>
+                        <div style="background: rgba(255,255,255,0.7); padding: 1rem; border-radius: 8px; margin: 1rem 0; font-size: 0.9rem;">
+                            <strong>技術情報:</strong> ${errorInfo.attempts}回の試行で${errorInfo.totalTime}ms経過
+                        </div>
+                        <div style="text-align: left; max-width: 500px; margin: 1.5rem auto;">
+                            <h4 style="color: #dc2626; margin-bottom: 0.5rem;">解決策:</h4>
+                            <ul style="padding-left: 1.5rem;">
+                                ${errorInfo.suggestions.map(suggestion => `<li style="margin-bottom: 0.5rem;">${suggestion}</li>`).join('')}
+                            </ul>
+                        </div>
+                        <div style="margin-top: 2rem;">
+                            <button onclick="retryFaceApiLoad()" style="margin: 0.5rem; padding: 0.75rem 1.5rem; background: #dc2626; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                🔄 再試行
+                            </button>
+                            <button onclick="location.reload()" style="margin: 0.5rem; padding: 0.75rem 1.5rem; background: #059669; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                🔃 ページを再読み込み
+                            </button>
+                        </div>
+                    </div>
+                `;
+                resultsDiv.classList.remove('hidden');
+            }
+        }
+
+        function retryFaceApiLoad() {
+            faceApiLoadAttempts = 0;
+            faceApiLoadStartTime = Date.now();
+            const resultsDiv = document.getElementById('results');
+            if (resultsDiv) {
+                resultsDiv.innerHTML = '<p>AIライブラリを再読み込み中...</p>';
+            }
+            loadFaceApi(0);
+        }
+
+        // 初期読み込み開始
+        document.addEventListener('DOMContentLoaded', function() {
+            updateLoadingProgress('library', 0);
+            loadFaceApi(0);
+        });
+    </script>
     <script src="security-check.js"></script>
     <script src="script.js"></script>
 </body>

@@ -306,10 +306,50 @@ async function attemptDynamicTranslation(lang) {
     }
 }
 
-// face-api.jsのモデルを読み込む
-const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/';
+// face-api.jsのモデルを読み込む - 複数ソース対応
+const MODEL_SOURCES = [
+    {
+        url: './libs/models/',
+        name: 'Local Models',
+        priority: 1
+    },
+    {
+        url: 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.12/model/',
+        name: 'jsDelivr CDN',
+        priority: 2
+    },
+    {
+        url: 'https://unpkg.com/@vladmandic/face-api@1.7.12/model/',
+        name: 'unpkg CDN',
+        priority: 3
+    }
+];
 
 let modelsLoaded = false;
+let currentModelSource = null;
+
+// 利用可能なモデルソースを検出
+async function detectAvailableModelSource() {
+    for (const source of MODEL_SOURCES) {
+        try {
+            // 小さなテストファイルで接続テスト（tinyFaceDetectorの最小ファイル）
+            const testResponse = await fetch(source.url + 'tiny_face_detector_model-weights_manifest.json', {
+                method: 'HEAD',
+                cache: 'no-cache'
+            });
+            
+            if (testResponse.ok) {
+                secureLog(`✅ Model source available: ${source.name}`);
+                return source;
+            }
+        } catch (error) {
+            secureLog(`❌ Model source unavailable: ${source.name}`);
+        }
+    }
+    
+    // フォールバック: 最初のCDNソースを返す
+    return MODEL_SOURCES[1];
+}
 
 // モデルの初期化
 async function loadModels() {
@@ -319,24 +359,69 @@ async function loadModels() {
             throw new Error('face-api.js library not loaded');
         }
         
-        secureLog('Loading AI models...');
+        // 利用可能なモデルソースを検出
+        if (!currentModelSource) {
+            currentModelSource = await detectAvailableModelSource();
+            secureLog(`Using model source: ${currentModelSource.name} (${currentModelSource.url})`);
+        }
+        
+        const MODEL_URL = currentModelSource.url;
+        secureLog('Loading AI models from:', MODEL_URL);
+        
+        // 進捗表示のためのヘルパー関数
+        const updateProgress = (message, progress) => {
+            if (typeof updateLoadingProgress === 'function') {
+                updateLoadingProgress('models', progress);
+            }
+            secureLog(message);
+        };
+        
+        updateProgress('顔検出モデルを読み込み中...', 0);
+        
+        // モデルを順次読み込みで進捗表示
         await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-        await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL); // 小さな顔検出用
+        updateProgress('SSDモデルを読み込み中...', 20);
+        
+        await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+        updateProgress('年齢・性別認識モデルを読み込み中...', 40);
+        
         await faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL);
+        updateProgress('顔特徴点検出モデルを読み込み中...', 60);
+        
         await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+        updateProgress('表情認識モデルを読み込み中...', 80);
+        
         await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
+        updateProgress('モデル読み込み完了', 100);
+        
         modelsLoaded = true;
-        secureLog('モデルの読み込みが完了しました');
+        secureLog(`✅ All models loaded successfully from ${currentModelSource.name}`);
+        
+        // 最終的な完了表示
+        if (typeof updateLoadingProgress === 'function') {
+            updateLoadingProgress('ready', 100);
+        }
     } catch (error) {
         modelsLoaded = false;
-        secureError('モデルの読み込みエラー:', error);
+        secureError(`❌ Model loading failed from ${currentModelSource?.name || 'unknown source'}:`, error);
         
+        // より詳細なエラー分析
         if (error.message && error.message.includes('face-api')) {
             showError('AIライブラリの読み込みに失敗しました。ページを再読み込みしてください。');
-        } else if (error.message && error.message.includes('network')) {
-            showError('ネットワークエラーです。インターネット接続を確認してページを再読み込みしてください。');
+        } else if (error.message && (error.message.includes('network') || error.message.includes('fetch'))) {
+            // 他のモデルソースでリトライ
+            const remainingSources = MODEL_SOURCES.filter(s => s !== currentModelSource);
+            if (remainingSources.length > 0) {
+                secureLog('Retrying with next model source...');
+                currentModelSource = remainingSources[0];
+                return loadModels(); // 再帰的にリトライ
+            } else {
+                showError('ネットワークエラーです。インターネット接続を確認してページを再読み込みしてください。');
+            }
+        } else if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+            showError('モデルファイルの取得に失敗しました。ネットワーク接続またはファイアウォールの設定を確認してください。');
         } else {
-            showError(getTranslation('errors.modelLoad'));
+            showError(getTranslation('errors.modelLoad') || 'モデルの読み込みに失敗しました。');
         }
     }
 }
@@ -795,15 +880,49 @@ function hideLoading() {
     }
 }
 
-function showError(message) {
+function showError(message, details = null) {
     const resultsDiv = document.getElementById('results');
     const resultContent = document.getElementById('resultContent');
 
     if (resultsDiv && resultContent) {
         // エラーメッセージをHTMLエスケープして安全に表示
         const escapedMessage = message.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        resultContent.innerHTML = `<div class="error">${escapedMessage}</div>`;
+        
+        let errorHtml = `
+            <div class="error enhanced-error">
+                <div class="error-icon">⚠️</div>
+                <h3 class="error-title">エラーが発生しました</h3>
+                <p class="error-message">${escapedMessage}</p>
+        `;
+        
+        if (details) {
+            errorHtml += `
+                <div class="error-details">
+                    <details>
+                        <summary>技術的な詳細情報</summary>
+                        <pre>${details.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+                    </details>
+                </div>
+            `;
+        }
+        
+        errorHtml += `
+                <div class="error-actions">
+                    <button onclick="location.reload()" class="retry-button">
+                        🔄 ページを再読み込み
+                    </button>
+                    <button onclick="hideError()" class="dismiss-button">
+                        ✕ 閉じる
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        resultContent.innerHTML = errorHtml;
         resultsDiv.classList.remove('hidden');
+        
+        // エラーログを記録（開発環境のみ）
+        secureError('User error displayed:', message, details);
     } else {
         secureError('Error display elements not found');
         // フォールバック: アラートで表示
